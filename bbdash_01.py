@@ -12,7 +12,7 @@ df = pd.read_csv('Rock_City_FY2022_Budget_Data.csv')
 
 
 deptlist = df['dept_name'].unique()
-department = st.selectbox("Select a department:", deptlist, index=0)
+#epartment = st.selectbox("Select a department:", deptlist, index=0)
 
 #create by department list
 #df_group_dept = df.groupby(deptlist)
@@ -75,4 +75,4 @@ else:
 #
 
 
-# first version I am commiting
+# second version I am commiting
