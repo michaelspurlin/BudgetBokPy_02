@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode, DataReturnMode # better tables in Streamlit
+
 
 # df = pd.DataFrame(px.data.gapminder())
 #  clist = df['country'].unique()
@@ -8,7 +10,7 @@ import plotly.express as px
 
 df = pd.read_csv('Rock_City_FY2022_Budget_Data.csv')
 
-#format amount
+
 
 
 deptlist = df['dept_name'].unique()
@@ -58,21 +60,28 @@ else:
     fig = px.bar(df_fund_sum, x="amount", orientation='h')
     st.write(fig)
 
-#bar chart by one department
+#creating a batter table view of the data set using aggrid
+#put df into Agrid format
+#AgGrid(df)
+gb = GridOptionsBuilder.from_dataframe(df)
+gb.configure_pagination(paginationAutoPageSize=True) #Add pagination
+gb.configure_side_bar() #Add a sidebar
+gb.configure_selection('multiple', use_checkbox=True, groupSelectsChildren="Group checkbox select children") #Enable multi-row selection
+gridOptions = gb.build()
 
+grid_response = AgGrid(
+    df,
+    gridOptions=gridOptions,
+    data_return_mode='AS_INPUT',
+    update_mode='MODEL_CHANGED',
+    fit_columns_on_grid_load=False,
+    theme='blue', #Add theme color to the table
+    enable_enterprise_modules=True,
+    height=350,
+    width='100%',
+    reload_data=True
+)
 
-
-#group the data by dept
-#df_group_dept = df.groupby(['dept_name']).sum()
-
-
-
-
-#
-#
-
-# st.write(df_group_dept.columns)
-#
-
-
-# second version I am commiting
+data = grid_response['data']
+selected = grid_response['selected_rows']
+df2 = pd.DataFrame(selected) #Pass the selected rows to a new dataframe df2
