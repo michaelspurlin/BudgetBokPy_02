@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode, DataReturnMode # better tables in Streamlit
+#from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode, DataReturnMode # better tables in Streamlit
 
 
 # df = pd.DataFrame(px.data.gapminder())
