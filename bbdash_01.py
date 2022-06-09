@@ -9,6 +9,7 @@ import plotly.express as px
 #country = st.sidebar.selectbox("Select a country:", clist)
 
 df = pd.read_csv('Rock_City_FY2022_Budget_Data.csv')
+df_dept_info = pd.read_csv('departments.csv', encoding='unicode_escape')
 
 
 
@@ -30,7 +31,8 @@ df_fund = df[['fund_name', 'amount']]
 df_fund_sum = df_fund.groupby(['fund_name']).sum(['amount'])
 df_fund_sum = df_fund_sum.sort_values(by='amount', ascending=False)
 
-#creating columns
+# create choice (dept or fund or chart) radio buttons
+#creating page columns
 col1, col2 = st.columns((1,1))
 with col1:
      choice = st.radio(
@@ -50,10 +52,10 @@ with col2:
          ('table', 'chart'))
 
 
-# create choice (dept or fund or chart) radio buttons
 
 
-#create View (table or chart) radio buttons
+
+#create View (table or chart) based on radio button choice
 if view == 'table':
     st.write('You selected the table view.')
     st.dataframe(df_1, height=700)
@@ -62,8 +64,26 @@ else:
     fig = px.bar(df_1, x="amount", orientation='h')
     st.write(fig)
 
-
+# creatiing dept dropdown in side bar
 department = st.sidebar.selectbox("Select a department:", deptlist, index=0)
+
+
+st.header(department)
+st.markdown('### Misson')
+
+# setting first name as index column
+df_dept_info.set_index("dept_name", inplace = True)
+df_dept_info.loc[department]['Misson']
+
+
+
+st.markdown('### Objectives')
+df_dept_info.loc[department]['Objective 1']
+df_dept_info.loc[department]['Objective 2']
+df_dept_info.loc[department]['Objective 3']
+
+
+
 
 # #creating a better table view of the data set using aggrid
 # #put df into Agrid format
